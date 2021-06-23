@@ -87,7 +87,7 @@ form .btn {
   margin-left: 5px;
 }
 
-.todo-item {
+.todo-item, .checked {
   display: flex;
   justify-self: center;
   width: 75%;
@@ -96,8 +96,27 @@ form .btn {
   margin-top: 10px;
 }
 
+.checked {
+  box-shadow: none;
+  position: relative;
+}
+
+.checked:after {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  background: #1a1a1a;
+  content: "";
+  width: 100%;
+  display: block;
+}
+
+
 .todo-item p {
   margin-right: auto;
+  padding-left: 10px;
+  font-size: 1.2rem;
 }
 
 .check-off, .delete {
