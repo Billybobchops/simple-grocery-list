@@ -1,5 +1,43 @@
 'use strict';
 
+const todoItems = document.querySelector('.todo-items');
+
+function createTodo() {
+  const unchecked = [];
+  const checked = [];
+
+  const renderItems = function (e) {
+    e.preventDefault();
+    const formValue = document.querySelector('.input').value;
+
+    // clear / reset (very important)
+    document.querySelector('.todo-items').innerHTML = '';
+
+    // Push new item to unchecked array
+    unchecked.push(formValue);
+    console.log(unchecked);
+
+    // Spread unchecked array with checked array
+    const completeList = [...unchecked, ...checked];
+
+    // loop over completeList array to create markup
+    const markup = completeList.forEach(todo => {
+      ` <div class="todo-item">
+          <p>${todo}</p>
+          <button class="check-off">✅</button>
+          <div class="delete">🚫</div>
+        </div>`;
+    });
+    console.log(markup);
+
+    // and then render each item
+    // todoItems.insertAdjacentHTML('afterbegin', markup);
+  };
+
+  document.querySelector('.todo-form').addEventListener('submit', renderItems);
+}
+createTodo();
+
 function todoHandler() {
   const handler = function (e) {
     const todo = e.target.closest('.todo-item');
@@ -16,14 +54,10 @@ function todoHandler() {
 
     // delete items
     if (e.target.classList.contains('delete')) {
-      //
+      // build out functionality after createTodo function
     }
   };
 
-  document.querySelector('.todo-items').addEventListener('click', handler);
+  todoItems.addEventListener('click', handler);
 }
 todoHandler();
-
-function createTodo() {
-  // blah blah
-}
