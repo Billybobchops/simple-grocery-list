@@ -37,15 +37,16 @@ img {
 /* End Reset */
 
 body {
-  background: #ffffff url("/imgs/Grocery-store-produce.jpg") no-repeat right top;
+  background: #ffffff url('/imgs/Grocery-store-produce.jpg') no-repeat right top;
 }
 
-h1, p {
+h1,
+p {
   font-family: 'Bree Serif', serif;
 }
 
 h1 {
-  color: #56A250;
+  color: #56a250;
   font-size: 2.5rem;
   text-align: center;
 }
@@ -69,14 +70,14 @@ form {
 }
 
 .input {
-  border: 1px solid #56A250;
+  border: 1px solid #56a250;
   font-size: 1.2rem;
   padding: 8px;
   width: 55%;
 }
 
 .btn {
-  background-color: #56A250;
+  background-color: #56a250;
   color: #fff;
   border: none;
   text-transform: uppercase;
@@ -87,13 +88,16 @@ form .btn {
   margin-left: 5px;
 }
 
-.todo-item, .checked {
+.todo-item,
+.checked {
   display: flex;
   justify-self: center;
+  align-items: center;
   width: 75%;
   padding: 10px;
   box-shadow: 1px 3px 3px #0000002d;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .checked {
@@ -107,11 +111,10 @@ form .btn {
   top: 50%;
   height: 1.5px;
   background: #1a1a1a;
-  content: "";
+  content: '';
   width: 100%;
   display: block;
 }
-
 
 .todo-item p {
   margin-right: auto;
@@ -119,7 +122,11 @@ form .btn {
   font-size: 1.2rem;
 }
 
-.check-off, .delete {
-  padding: 0 8px;
+.check-off,
+.delete {
+  padding: 4px 8px;
   font-size: 1.2rem;
+  border: none;
+  background: none;
+  display: block;
 }

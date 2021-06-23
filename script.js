@@ -1,18 +1,29 @@
 'use strict';
 
-function changeOpacity() {
-  document.querySelectorAll('.todo-item').forEach((todo) => {
-    if (todo.classList.contains('checked')) {
-      todo.style.opacity = '.3';
-    }
-  })
-}
-changeOpacity();
+function todoHandler() {
+  const handler = function (e) {
+    const todo = e.target.closest('.todo-item');
 
-function complete() {
-  const markComplete = function (e) {
-    console.log(e);
-  }
-  document.querySelector('.todo-items').addEventListener('click', markComplete);
+    // check and uncheck items
+    if (e.target.classList.contains('check-off')) {
+      todo.classList.add('checked');
+      todo.style.opacity = '.25';
+    }
+    if (e.target.classList.contains('checked')) {
+      todo.classList.remove('checked');
+      todo.style.opacity = '1';
+    }
+
+    // delete items
+    if (e.target.classList.contains('delete')) {
+      //
+    }
+  };
+
+  document.querySelector('.todo-items').addEventListener('click', handler);
 }
-complete();
+todoHandler();
+
+function createTodo() {
+  // blah blah
+}
