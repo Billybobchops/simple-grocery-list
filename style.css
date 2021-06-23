@@ -1,0 +1,106 @@
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* End Reset */
+
+body {
+  background: #ffffff url("/imgs/Grocery-store-produce.jpg") no-repeat right top;
+}
+
+h1, p {
+  font-family: 'Bree Serif', serif;
+}
+
+h1 {
+  color: #56A250;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+form {
+  margin: 35px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  background-color: #fff;
+  width: 40rem;
+  height: 100vh;
+  margin: auto;
+  padding-top: 3rem;
+}
+
+.todo-container {
+  display: grid;
+}
+
+.input {
+  border: 1px solid #56A250;
+  font-size: 1.2rem;
+  padding: 8px;
+  width: 55%;
+}
+
+.btn {
+  background-color: #56A250;
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  padding: 12px 30px;
+}
+
+form .btn {
+  margin-left: 5px;
+}
+
+.todo-item {
+  display: flex;
+  justify-self: center;
+  width: 75%;
+  padding: 10px;
+  box-shadow: 1px 3px 3px #0000002d;
+  margin-top: 10px;
+}
+
+.todo-item p {
+  margin-right: auto;
+}
+
+.check-off, .delete {
+  padding: 0 8px;
+  font-size: 1.2rem;
+}
