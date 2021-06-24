@@ -15,23 +15,22 @@ function createTodo() {
 
     // Push new item to unchecked array
     unchecked.push(formValue);
-    console.log(unchecked);
 
     // Spread unchecked array with checked array
     const completeList = [...unchecked, ...checked];
 
     // loop over completeList array to create markup
-    const markup = completeList.forEach(todo => {
-      ` <div class="todo-item">
+    completeList.forEach(todo => {
+      const markup = ` <div class="todo-item">
           <p>${todo}</p>
           <button class="check-off">✅</button>
           <div class="delete">🚫</div>
         </div>`;
+      todoItems.insertAdjacentHTML('afterbegin', markup);
     });
-    console.log(markup);
 
-    // and then render each item
-    // todoItems.insertAdjacentHTML('afterbegin', markup);
+    // clear form field
+    document.querySelector('.todo-form').reset();
   };
 
   document.querySelector('.todo-form').addEventListener('submit', renderItems);
