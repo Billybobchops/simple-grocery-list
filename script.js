@@ -1,33 +1,54 @@
 'use strict';
 
-const todoItems = document.querySelector('.todo-items');
+const todosContainer = document.querySelector('.todos-container');
+const todos = [];
 
 function createTodo() {
-  const unchecked = [];
-  const checked = [];
-
   const renderItems = function (e) {
     e.preventDefault();
     const formValue = document.querySelector('.input').value;
 
-    // clear / reset (very important)
-    document.querySelector('.todo-items').innerHTML = '';
+    // guard clause for blank form entry
+    if (formValue === '') return;
 
-    // Push new item to unchecked array
-    unchecked.push(formValue);
+    // store state in local storage: ???
 
-    // Spread unchecked array with checked array
-    const completeList = [...unchecked, ...checked];
+    // push string AND todo status to todos array(object?)
+    todos.push(formValue);
 
-    // loop over completeList array to create markup
-    completeList.forEach(todo => {
-      const markup = ` <div class="todo-item">
+    // clear / reset (prevents rendering duplicates)
+    document.querySelector('.todos-container').innerHTML = '';
+
+    // loop over todos
+    todos.forEach(todo => {
+      // check todo status: (checked vs unchecked)
+
+      const uncheckedMarkup = `<div class="todo-item ${status}">
           <p>${todo}</p>
           <button class="check-off">✅</button>
           <div class="delete">🚫</div>
         </div>`;
-      todoItems.insertAdjacentHTML('afterbegin', markup);
+      todosContainer.insertAdjacentHTML('afterbegin', uncheckedMarkup);
     });
+
+    // loop over completeList array to create markup
+    // unchecked.forEach(todo => {
+    //   const uncheckedMarkup = ` <div class="todo-item">
+    //       <p>${todo}</p>
+    //       <button class="check-off">✅</button>
+    //       <div class="delete">🚫</div>
+    //     </div>`;
+    //   todosContainer.insertAdjacentHTML('afterbegin', uncheckedMarkup);
+    // });
+
+    // checked.forEach(todo => {
+    //   const checkedMarkup = ` <div class="todo-item checked">
+    //       <p>${todo}</p>
+    //       <button class="check-off">✅</button>
+    //       <div class="delete">🚫</div>
+    //     </div>`;
+    //   todosContainer.insertAdjacentHTML('afterbegin', checkedMarkup);
+    // });
 
     // clear form field
     document.querySelector('.todo-form').reset();
@@ -57,6 +78,6 @@ function todoHandler() {
     }
   };
 
-  todoItems.addEventListener('click', handler);
+  todosContainer.addEventListener('click', handler);
 }
 todoHandler();
