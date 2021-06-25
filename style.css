@@ -84,6 +84,12 @@ form {
   padding: 12px 30px;
 }
 
+.clear-btn {
+  background-color: #c02e2e;
+  width: 145px;
+  margin: auto;
+}
+
 form .btn {
   margin-left: 5px;
 }
@@ -129,4 +135,8 @@ form .btn {
   border: none;
   background: none;
   display: block;
+}
+
+.hidden {
+  display: none;
 }
