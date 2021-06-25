@@ -9,14 +9,22 @@ const clearBtn = document.querySelector('.clear-btn');
 localStorage.setItem('todo-items', JSON.stringify(todos));
 // const data = JSON.parse(localStorage.getItem('todo-items')); // This screwed things up
 
-function toggleClearBtn() {
-  if (todosContainer.children.length > 1) clearBtn.classList.remove('hidden');
+function resetPage() {
+  todosContainer.innerHTML = '';
+}
+
+function toggleClearAllBtn() {
+  if (todosContainer.children.length > 0) clearBtn.classList.remove('hidden');
   if (todosContainer.children.length === 0) clearBtn.classList.add('hidden');
 }
 
-function resetPage() {
-  document.querySelector('.todos-container').innerHTML = '';
-}
+const clearAll = function () {
+  resetPage();
+  localStorage.clear();
+  todos = [];
+  toggleClearAllBtn();
+};
+clearBtn.addEventListener('click', clearAll);
 
 function renderData() {
   resetPage();
@@ -41,7 +49,7 @@ function renderData() {
        </div>`;
     todosContainer.insertAdjacentHTML('afterbegin', checkedMarkup);
   });
-  toggleClearBtn();
+  toggleClearAllBtn();
 }
 renderData();
 
@@ -67,7 +75,7 @@ function createNewTodo() {
 
     resetPage();
     renderData();
-    toggleClearBtn();
+    toggleClearAllBtn();
 
     // clear form field for next entry
     document.querySelector('.todo-form').reset();
@@ -103,10 +111,3 @@ function handleTodo() {
   todosContainer.addEventListener('click', handler);
 }
 handleTodo();
-
-const clearAll = function () {
-  localStorage.clear();
-  renderData();
-};
-
-clearBtn.addEventListener('click', clearAll);

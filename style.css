@@ -88,6 +88,9 @@ form {
   background-color: #c02e2e;
   width: 145px;
   margin: 35px auto;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 
 form .btn {
