@@ -4,6 +4,7 @@ const todosContainer = document.querySelector('.todos-container');
 let todos = localStorage.getItem('todo-items')
   ? JSON.parse(localStorage.getItem('todo-items'))
   : [];
+const clearBtn = document.querySelector('.clear-btn');
 
 localStorage.setItem('todo-items', JSON.stringify(todos));
 const data = JSON.parse(localStorage.getItem('todo-items'));
@@ -32,8 +33,17 @@ function renderData() {
        </div>`;
     todosContainer.insertAdjacentHTML('afterbegin', checkedMarkup);
   });
+  toggleClearBtn();
 }
 renderData();
+
+function toggleClearBtn() {
+  // only show clear btn when there are todo items
+  if (todosContainer.children.length > 1) clearBtn.classList.remove('hidden');
+  // hide clear btn when there are no todo items
+  if (todosContainer.children.length === 0)
+    clearBtn.querySelector('.clear-btn').classList.add('hidden');
+}
 
 function createNewTodo() {
   const form = document.querySelector('.todo-form');
@@ -58,8 +68,8 @@ function createNewTodo() {
     // clear / reset the page (prevents rendering duplicates)
     document.querySelector('.todos-container').innerHTML = '';
 
-    // render new todo
     renderData();
+    toggleClearBtn();
 
     // clear form field for next entry
     document.querySelector('.todo-form').reset();
@@ -93,14 +103,8 @@ function handleTodo() {
 }
 handleTodo();
 
-function clearAll() {
-  // only show clear btn when there are todo items
-  if (todosContainer.children.length > 1)
-    document.querySelector('.clear-btn').classList.remove('hidden');
-  // hide clear btn when there are no todo items
-  if (todosContainer.children.length === 0)
-    document.querySelector('.clear-btn').classList.add('hidden');
+const clearAll = function () {
+  localStorage.clear();
+};
 
-  // localStorage.clear();
-}
-clearAll();
+clearBtn.addEventListener('click', clearAll);
