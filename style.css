@@ -87,7 +87,7 @@ form {
 .clear-btn {
   background-color: #c02e2e;
   width: 145px;
-  margin: auto;
+  margin: 35px auto;
 }
 
 form .btn {
@@ -104,6 +104,10 @@ form .btn {
   box-shadow: 1px 3px 3px #0000002d;
   margin-top: 10px;
   cursor: pointer;
+}
+
+.todo-item {
+  background-color: #ecfff2;
 }
 
 .checked {

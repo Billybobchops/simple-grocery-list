@@ -7,13 +7,21 @@ let todos = localStorage.getItem('todo-items')
 const clearBtn = document.querySelector('.clear-btn');
 
 localStorage.setItem('todo-items', JSON.stringify(todos));
-const data = JSON.parse(localStorage.getItem('todo-items'));
+// const data = JSON.parse(localStorage.getItem('todo-items')); // This screwed things up
+
+function toggleClearBtn() {
+  if (todosContainer.children.length > 1) clearBtn.classList.remove('hidden');
+  if (todosContainer.children.length === 0) clearBtn.classList.add('hidden');
+}
+
+function resetPage() {
+  document.querySelector('.todos-container').innerHTML = '';
+}
 
 function renderData() {
-  // loop twice to sort checked todos to the end: (what about array.sort()?)
-
+  resetPage();
   // 1. loop and render unchecked todos
-  data.forEach(todo => {
+  todos.forEach(todo => {
     if (todo.checked === true) return;
     const uncheckedMarkup = `<div class="todo-item">
         <p>${todo.todoTitle}</p>
@@ -24,7 +32,7 @@ function renderData() {
   });
 
   // 2. loop and render checked todos
-  data.forEach(todo => {
+  todos.forEach(todo => {
     if (todo.checked === false) return;
     const checkedMarkup = `<div class="todo-item checked">
         <p>${todo.todoTitle}</p>
@@ -37,14 +45,6 @@ function renderData() {
 }
 renderData();
 
-function toggleClearBtn() {
-  // only show clear btn when there are todo items
-  if (todosContainer.children.length > 1) clearBtn.classList.remove('hidden');
-  // hide clear btn when there are no todo items
-  if (todosContainer.children.length === 0)
-    clearBtn.querySelector('.clear-btn').classList.add('hidden');
-}
-
 function createNewTodo() {
   const form = document.querySelector('.todo-form');
   const renderNewTodo = function (e) {
@@ -54,7 +54,7 @@ function createNewTodo() {
     // guard clause for blank form entry
     if (formValue === '') return;
 
-    // push string & todo status to local todos array of objects
+    // push string & todo status to local todos array
     todos.push({ todoTitle: `${formValue}`, checked: false });
 
     // store state (todos array) in local storage
@@ -65,9 +65,7 @@ function createNewTodo() {
       window.alert('Local storage is not supported in your browser.');
     }
 
-    // clear / reset the page (prevents rendering duplicates)
-    document.querySelector('.todos-container').innerHTML = '';
-
+    resetPage();
     renderData();
     toggleClearBtn();
 
@@ -95,7 +93,10 @@ function handleTodo() {
 
     // delete items
     if (e.target.classList.contains('delete')) {
-      localStorage.removeItem(`${todo}`);
+      const todoKey = todo.firstElementChild.innerHTML;
+      localStorage.removeItem(`${todoKey}`);
+      // re-render
+      renderData();
     }
   };
 
@@ -105,6 +106,7 @@ handleTodo();
 
 const clearAll = function () {
   localStorage.clear();
+  renderData();
 };
 
 clearBtn.addEventListener('click', clearAll);
