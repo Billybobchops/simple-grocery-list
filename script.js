@@ -65,7 +65,7 @@ function createNewTodo() {
     // push string & todo status to local todos array
     todos.push({ todoTitle: `${formValue}`, checked: false });
 
-    // store state (todos array) in local storage
+    // store local state (todos array) in local storage
     if (typeof Storage !== 'undefined') {
       localStorage.setItem('todo-items', JSON.stringify(todos));
     } else {
@@ -88,15 +88,28 @@ createNewTodo();
 function handleTodo() {
   const handler = function (e) {
     const todo = e.target.closest('.todo-item');
+    const currentTodo = todos.find(checkTitle);
+    const i = todos.indexOf(currentTodo);
+    const todosData = JSON.parse(localStorage['todo-items']); // read
+
+    function checkTitle(t) {
+      return t.todoTitle === todo.firstElementChild.textContent;
+    }
 
     // 1. check and 2. uncheck items
     if (e.target.classList.contains('check-off')) {
       todo.classList.add('checked');
-      todo.style.opacity = '.25';
+
+      // update localStorage
+      todosData[`${i}`].checked = true; // overwrite
+      localStorage['todo-items'] = JSON.stringify(todosData); // update
     }
     if (e.target.classList.contains('checked')) {
       todo.classList.remove('checked');
-      todo.style.opacity = '1';
+
+      // update localStorage
+      todosData[`${i}`].checked = false; // overwrite
+      localStorage['todo-items'] = JSON.stringify(todosData); // update
     }
 
     // delete items

@@ -116,6 +116,7 @@ form .btn {
 .checked {
   box-shadow: none;
   position: relative;
+  opacity: 0.25;
 }
 
 .checked:after {
