@@ -6,10 +6,9 @@ let todos = localStorage.getItem('todo-items')
   : [];
 const clearBtn = document.querySelector('.clear-btn');
 
-localStorage.setItem('todo-items', JSON.stringify(todos));
-// const data = JSON.parse(localStorage.getItem('todo-items')); // This screwed things up
+// localStorage.setItem('todo-items', JSON.stringify(todos));
 
-function resetPage() {
+function resetUI() {
   todosContainer.innerHTML = '';
 }
 
@@ -19,28 +18,20 @@ function toggleClearAllBtn() {
 }
 
 const clearAll = function () {
-  resetPage();
+  resetUI();
   localStorage.clear();
   todos = [];
   toggleClearAllBtn();
 };
-clearBtn.addEventListener('click', clearAll);
 
 function renderData() {
-  resetPage();
-  // 1. loop and render unchecked todos
-  todos.forEach(todo => {
-    if (todo.checked === true) return;
-    const uncheckedMarkup = `<div class="todo-item">
-        <p>${todo.todoTitle}</p>
-        <button class="check-off">✅</button>
-        <div class="delete">🚫</div>
-       </div>`;
-    todosContainer.insertAdjacentHTML('afterbegin', uncheckedMarkup);
-  });
+  resetUI();
+  // reverse the todos
+  const todosClone = [...todos];
+  const todosReversed = todosClone.reverse();
 
-  // 2. loop and render checked todos
-  todos.forEach(todo => {
+  // 1. loop and render checked todos
+  todosReversed.forEach(todo => {
     if (todo.checked === false) return;
     const checkedMarkup = `<div class="todo-item checked">
         <p>${todo.todoTitle}</p>
@@ -49,9 +40,19 @@ function renderData() {
        </div>`;
     todosContainer.insertAdjacentHTML('afterbegin', checkedMarkup);
   });
+
+  // 2. loop and render unchecked todos
+  todosReversed.forEach(todo => {
+    if (todo.checked === true) return;
+    const uncheckedMarkup = `<div class="todo-item">
+        <p>${todo.todoTitle}</p>
+        <button class="check-off">✅</button>
+        <div class="delete">🚫</div>
+       </div>`;
+    todosContainer.insertAdjacentHTML('afterbegin', uncheckedMarkup);
+  });
   toggleClearAllBtn();
 }
-renderData();
 
 function createNewTodo() {
   const form = document.querySelector('.todo-form');
@@ -73,7 +74,7 @@ function createNewTodo() {
       window.alert('Local storage is not supported in your browser.');
     }
 
-    resetPage();
+    resetUI();
     renderData();
     toggleClearAllBtn();
 
@@ -83,7 +84,6 @@ function createNewTodo() {
 
   form.addEventListener('submit', renderNewTodo);
 }
-createNewTodo();
 
 function handleTodo() {
   const handler = function (e) {
@@ -103,6 +103,7 @@ function handleTodo() {
       // update localStorage
       todosData[`${i}`].checked = true; // overwrite
       localStorage['todo-items'] = JSON.stringify(todosData); // update
+      console.log(`about to render`);
     }
     if (e.target.classList.contains('checked')) {
       todo.classList.remove('checked');
@@ -114,13 +115,20 @@ function handleTodo() {
 
     // delete items
     if (e.target.classList.contains('delete')) {
-      const todoKey = todo.firstElementChild.innerHTML;
-      localStorage.removeItem(`${todoKey}`);
-      // re-render
-      renderData();
+      console.log(`Delete Btn clicked`);
+
+      localStorage.removeItem(todosData[`${i}`]);
+      localStorage['todo-items'] = JSON.stringify(todosData); // not working
+
+      // re-render?
+      // renderData();
     }
   };
 
   todosContainer.addEventListener('click', handler);
 }
+
+clearBtn.addEventListener('click', clearAll);
+renderData();
+createNewTodo();
 handleTodo();
