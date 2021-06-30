@@ -6,6 +6,10 @@ let todos = localStorage.getItem('todo-items')
 
 // let todosData = JSON.parse(localStorage['todo-items']); // BUG
 // let todosData = JSON.parse(localStorage.getItem('todo-items')); // BUG
+
+const form = document.querySelector('.todo-form');
+const formInput = document.querySelector('.input');
+const formValue = document.querySelector('.input').value;
 const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
 
@@ -36,7 +40,8 @@ function renderData() {
     const checkedMarkup = `<div class="todo-item checked">
         <p>${todo.todoTitle}</p>
         <button class="check-off">✅</button>
-        <div class="delete">🚫</div>
+        <button class="edit">✍️</button>
+        <button class="delete">🚫</button>
        </div>`;
     todosContainer.insertAdjacentHTML('afterbegin', checkedMarkup);
   });
@@ -47,7 +52,8 @@ function renderData() {
     const uncheckedMarkup = `<div class="todo-item">
         <p>${todo.todoTitle}</p>
         <button class="check-off">✅</button>
-        <div class="delete">🚫</div>
+        <button class="edit">✍️</button>
+        <button class="delete">🚫</button>
        </div>`;
     todosContainer.insertAdjacentHTML('afterbegin', uncheckedMarkup);
   });
@@ -55,10 +61,8 @@ function renderData() {
 }
 
 function createNewTodo() {
-  const form = document.querySelector('.todo-form');
   const renderNewTodo = function (e) {
     e.preventDefault();
-    const formValue = document.querySelector('.input').value;
 
     // guard clause for blank form entry
     if (formValue === '') return;
@@ -78,7 +82,7 @@ function createNewTodo() {
     toggleClearAllBtn();
 
     // clear form field for next entry
-    document.querySelector('.todo-form').reset();
+    form.reset();
   };
 
   form.addEventListener('submit', renderNewTodo);
@@ -112,6 +116,19 @@ function handleChecks() {
   todosContainer.addEventListener('click', checkHandler);
 }
 
+function editTodo() {
+  const editHandler = function (e) {
+    const todo = e.target.closest('.todo-item');
+    todo.classList.toggle('todo--active-edit');
+
+    if (todo.classList.contains('todo--active-edit')) {
+      formInput.focus();
+    }
+  };
+
+  todosContainer.addEventListener('click', editHandler);
+}
+
 function deleteTodo() {
   const deleteHandler = function (e) {
     function checkTitle(t) {
@@ -134,6 +151,7 @@ function deleteTodo() {
 function init() {
   renderData();
   createNewTodo();
+  editTodo();
   deleteTodo();
   handleChecks();
 }

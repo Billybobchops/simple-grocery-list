@@ -137,7 +137,8 @@ form .btn {
 }
 
 .check-off,
-.delete {
+.delete,
+.edit {
   padding: 4px 8px;
   font-size: 1.2rem;
   border: none;
