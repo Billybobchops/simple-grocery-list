@@ -1,9 +1,9 @@
 'use strict';
 
-const todosContainer = document.querySelector('.todos-container');
 let todos = localStorage.getItem('todo-items')
   ? JSON.parse(localStorage.getItem('todo-items'))
   : [];
+const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
 
 // localStorage.setItem('todo-items', JSON.stringify(todos));
@@ -85,7 +85,7 @@ function createNewTodo() {
   form.addEventListener('submit', renderNewTodo);
 }
 
-function handleTodo() {
+function handleChecks() {
   const handler = function (e) {
     const todo = e.target.closest('.todo-item');
     const currentTodo = todos.find(checkTitle);
@@ -112,10 +112,18 @@ function handleTodo() {
       todosData[`${i}`].checked = false; // overwrite
       localStorage['todo-items'] = JSON.stringify(todosData); // update
     }
+  };
 
-    // delete items
+  todosContainer.addEventListener('click', handler);
+}
+
+function deleteTodo() {
+  const deleteHandler = function (e) {
+    const todosData = JSON.parse(localStorage['todo-items']);
+
     if (e.target.classList.contains('delete')) {
-      console.log(`Delete Btn clicked`);
+      console.log(`Delete Btn clicked.`);
+      console.log(todosData);
 
       localStorage.removeItem(todosData[`${i}`]);
       localStorage['todo-items'] = JSON.stringify(todosData); // not working
@@ -125,10 +133,12 @@ function handleTodo() {
     }
   };
 
-  todosContainer.addEventListener('click', handler);
+  todosContainer.addEventListener('click', deleteHandler);
 }
 
 clearBtn.addEventListener('click', clearAll);
+
 renderData();
 createNewTodo();
-handleTodo();
+deleteTodo();
+handleChecks();
