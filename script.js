@@ -4,8 +4,8 @@ let todos = localStorage.getItem('todo-items')
   ? JSON.parse(localStorage.getItem('todo-items'))
   : [];
 
-// let todosData = JSON.parse(localStorage['todo-items']);
-let todosData = JSON.parse(localStorage.getItem('todo-items'));
+// let todosData = JSON.parse(localStorage['todo-items']); // BUG
+// let todosData = JSON.parse(localStorage.getItem('todo-items')); // BUG
 const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
 
@@ -27,7 +27,7 @@ const clearAll = function () {
 
 function renderData() {
   resetUI();
-  let todosClone = [...todosData];
+  let todosClone = [...todos];
   let todosReversed = todosClone.reverse();
 
   // 1. loop and render checked todos
@@ -96,15 +96,15 @@ function handleChecks() {
     if (e.target.classList.contains('check-off')) {
       todo.classList.add('checked');
       // update localStorage
-      todosData[`${i}`].checked = true; // overwrite
-      localStorage['todo-items'] = JSON.stringify(todosData); // update
+      todos[`${i}`].checked = true; // overwrite
+      localStorage['todo-items'] = JSON.stringify(todos); // update
       renderData();
     }
     if (e.target.classList.contains('checked')) {
       todo.classList.remove('checked');
       // update localStorage
-      todosData[`${i}`].checked = false; // overwrite
-      localStorage['todo-items'] = JSON.stringify(todosData); // update
+      todos[`${i}`].checked = false; // overwrite
+      localStorage['todo-items'] = JSON.stringify(todos); // update
       renderData();
     }
   };
@@ -120,11 +120,10 @@ function deleteTodo() {
     const todo = e.target.closest('.todo-item');
     const currentTodo = todos.find(checkTitle);
     const i = todos.indexOf(currentTodo);
-    const todosData = JSON.parse(localStorage['todo-items']);
 
     if (e.target.classList.contains('delete')) {
-      todosData.splice(`${i}`, 1);
-      localStorage['todo-items'] = JSON.stringify(todosData);
+      todos.splice(`${i}`, 1);
+      localStorage['todo-items'] = JSON.stringify(todos);
       renderData();
     }
   };
