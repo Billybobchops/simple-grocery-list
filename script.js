@@ -3,11 +3,11 @@
 let todos = localStorage.getItem('todo-items')
   ? JSON.parse(localStorage.getItem('todo-items'))
   : [];
-const todosData = JSON.parse(localStorage['todo-items']);
+
+// let todosData = JSON.parse(localStorage['todo-items']);
+let todosData = JSON.parse(localStorage.getItem('todo-items'));
 const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
-
-// localStorage.setItem('todo-items', JSON.stringify(todos));
 
 function resetUI() {
   todosContainer.innerHTML = '';
@@ -27,9 +27,8 @@ const clearAll = function () {
 
 function renderData() {
   resetUI();
-  // reverse the todos
-  const todosClone = [...todosData];
-  const todosReversed = todosClone.reverse();
+  let todosClone = [...todosData];
+  let todosReversed = todosClone.reverse();
 
   // 1. loop and render checked todos
   todosReversed.forEach(todo => {
@@ -75,7 +74,6 @@ function createNewTodo() {
       window.alert('Local storage is not supported in your browser.');
     }
 
-    resetUI();
     renderData();
     toggleClearAllBtn();
 
@@ -87,7 +85,7 @@ function createNewTodo() {
 }
 
 function handleChecks() {
-  const handler = function (e) {
+  const checkHandler = function (e) {
     function checkTitle(t) {
       return t.todoTitle === todo.firstElementChild.textContent;
     }
@@ -97,7 +95,6 @@ function handleChecks() {
 
     if (e.target.classList.contains('check-off')) {
       todo.classList.add('checked');
-
       // update localStorage
       todosData[`${i}`].checked = true; // overwrite
       localStorage['todo-items'] = JSON.stringify(todosData); // update
@@ -105,7 +102,6 @@ function handleChecks() {
     }
     if (e.target.classList.contains('checked')) {
       todo.classList.remove('checked');
-
       // update localStorage
       todosData[`${i}`].checked = false; // overwrite
       localStorage['todo-items'] = JSON.stringify(todosData); // update
@@ -113,7 +109,7 @@ function handleChecks() {
     }
   };
 
-  todosContainer.addEventListener('click', handler);
+  todosContainer.addEventListener('click', checkHandler);
 }
 
 function deleteTodo() {
@@ -127,21 +123,22 @@ function deleteTodo() {
     const todosData = JSON.parse(localStorage['todo-items']);
 
     if (e.target.classList.contains('delete')) {
-      console.log(todosData[`${i}`]);
-      localStorage.removeItem(todosData[`${i}`]);
-      localStorage['todo-items'] = JSON.stringify(todosData); // not working
-
-      // re-render?
-      // renderData();
+      todosData.splice(`${i}`, 1);
+      localStorage['todo-items'] = JSON.stringify(todosData);
+      renderData();
     }
   };
 
   todosContainer.addEventListener('click', deleteHandler);
 }
 
+function init() {
+  renderData();
+  createNewTodo();
+  deleteTodo();
+  handleChecks();
+}
+
 clearBtn.addEventListener('click', clearAll);
 
-renderData();
-createNewTodo();
-deleteTodo();
-handleChecks();
+init();
