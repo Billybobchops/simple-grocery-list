@@ -3,6 +3,7 @@
 let todos = localStorage.getItem('todo-items')
   ? JSON.parse(localStorage.getItem('todo-items'))
   : [];
+const todosData = JSON.parse(localStorage['todo-items']);
 const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
 
@@ -27,7 +28,7 @@ const clearAll = function () {
 function renderData() {
   resetUI();
   // reverse the todos
-  const todosClone = [...todos];
+  const todosClone = [...todosData];
   const todosReversed = todosClone.reverse();
 
   // 1. loop and render checked todos
@@ -87,23 +88,20 @@ function createNewTodo() {
 
 function handleChecks() {
   const handler = function (e) {
-    const todo = e.target.closest('.todo-item');
-    const currentTodo = todos.find(checkTitle);
-    const i = todos.indexOf(currentTodo);
-    const todosData = JSON.parse(localStorage['todo-items']); // read
-
     function checkTitle(t) {
       return t.todoTitle === todo.firstElementChild.textContent;
     }
+    const todo = e.target.closest('.todo-item');
+    const currentTodo = todos.find(checkTitle);
+    const i = todos.indexOf(currentTodo);
 
-    // 1. check and 2. uncheck items
     if (e.target.classList.contains('check-off')) {
       todo.classList.add('checked');
 
       // update localStorage
       todosData[`${i}`].checked = true; // overwrite
       localStorage['todo-items'] = JSON.stringify(todosData); // update
-      console.log(`about to render`);
+      renderData();
     }
     if (e.target.classList.contains('checked')) {
       todo.classList.remove('checked');
@@ -111,6 +109,7 @@ function handleChecks() {
       // update localStorage
       todosData[`${i}`].checked = false; // overwrite
       localStorage['todo-items'] = JSON.stringify(todosData); // update
+      renderData();
     }
   };
 
@@ -119,12 +118,16 @@ function handleChecks() {
 
 function deleteTodo() {
   const deleteHandler = function (e) {
+    function checkTitle(t) {
+      return t.todoTitle === todo.firstElementChild.textContent;
+    }
+    const todo = e.target.closest('.todo-item');
+    const currentTodo = todos.find(checkTitle);
+    const i = todos.indexOf(currentTodo);
     const todosData = JSON.parse(localStorage['todo-items']);
 
     if (e.target.classList.contains('delete')) {
-      console.log(`Delete Btn clicked.`);
-      console.log(todosData);
-
+      console.log(todosData[`${i}`]);
       localStorage.removeItem(todosData[`${i}`]);
       localStorage['todo-items'] = JSON.stringify(todosData); // not working
 
