@@ -110,30 +110,43 @@ const handleChecks = function (e) {
 };
 
 const updateTodo = function (e) {
-  e.preventDefault();
   const todo = e.target.closest('.todo-item');
+
+  // Need guard clause here
+  if (!e.target.classList.contains('edit')) return;
+
+  // is there a better way to do this than to nest if statements...?!
+  if (e.target.classList.contains('edit')) {
+    if (!todo.classList.contains('todo--active-edit')) {
+      todo.classList.add('todo--active-edit');
+      createForm.classList.add('hidden');
+      updateForm.classList.remove('hidden');
+      // need to loop over todos and remove active edit
+      // so that no more than one can be active at a time
+      updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
+      todo.style.backgroundColor = '#bbcbf7';
+      updateFormInput.focus();
+    } else {
+      todo.classList.remove('todo--active-edit');
+    }
+  }
+};
+
+const renderUpdate = function (e) {
+  e.preventDefault();
+  const activeEdit = document.querySelector('.todo--active-edit');
+  function checkTitle(t) {
+    return t.todoTitle === activeEdit.firstElementChild.textContent;
+  }
+  const currentTodo = todos.find(checkTitle);
+  const i = todos.indexOf(currentTodo);
+
   let formValue = document.querySelector('.update-input').value;
 
-  if (!todo.classList.contains('todo--active-edit')) {
-    todo.classList.add('todo--active-edit');
-    createForm.classList.add('hidden');
-    updateForm.classList.remove('hidden');
-    updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
-    updateFormInput.focus();
-    todo.firstElementChild.textContent = formValue; // this needs to happen AFTER submit NOT when hitting update icon
-  } else {
-    todo.classList.remove('todo--active-edit');
-  }
+  // copy and edit the local storage code from handleChecks() function here
 
-  // const activeEdit = document.querySelector('.todo--active-edit');
-  // const i = todos.indexOf(activeEdit);
-
-  // if (todo.classList.contains('todo--active-edit')) {
-  //   createForm.classList.add('hidden');
-  //   updateForm.classList.remove('hidden');
-  //   updateFormInput.focus();
-  //   updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
-  // }
+  // re-render newly update list to the UI
+  // renderUI();
 };
 
 const deleteTodo = function (e) {
@@ -163,7 +176,7 @@ const clearAll = function () {
 renderUI();
 
 createForm.addEventListener('submit', createNewTodo);
-updateForm.addEventListener('submit', updateTodo);
+updateForm.addEventListener('submit', renderUpdate);
 todosContainer.addEventListener('click', handleChecks);
 todosContainer.addEventListener('click', updateTodo);
 todosContainer.addEventListener('click', deleteTodo);
