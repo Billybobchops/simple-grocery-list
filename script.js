@@ -98,7 +98,7 @@ function handleChecks() {
     // if (!e.target.closest('todos-container')) return;
     // if (e.target !== todosContainer) return;
 
-    console.log(`click`);
+    console.log(`handleChecks() function click`);
 
     const todo = e.target.closest('.todo-item');
     function checkTitle(t) {
@@ -131,7 +131,7 @@ function editTodo() {
     const todo = e.target.closest('.todo-item');
 
     // guard clause
-    if (e.target !== todo) return;
+    // if (e.target !== todo) return; // doesn't work
 
     const editTodoText = function () {
       //
@@ -140,8 +140,10 @@ function editTodo() {
     todo.classList.toggle('todo--active-edit');
 
     if (todo.classList.contains('todo--active-edit')) {
-      // form.addEventListener('submit', editTodotext);
+      form.addEventListener('submit', editTodoText);
       formInput.focus();
+      //
+      form.removeEventListener('submit', editTodoText);
     }
   };
 
