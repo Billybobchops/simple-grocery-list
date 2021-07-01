@@ -4,8 +4,10 @@ let todos = localStorage.getItem('todo-items')
   ? JSON.parse(localStorage.getItem('todo-items'))
   : [];
 
-const form = document.querySelector('.todo-form');
-const formInput = document.querySelector('.input');
+const createForm = document.querySelector('.create-form');
+const createFormInput = document.querySelector('.create-input');
+const updateForm = document.querySelector('.update-form');
+const updateFormInput = document.querySelector('.update-input');
 const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
 
@@ -51,7 +53,7 @@ function toggleClearAllBtn() {
 
 const createNewTodo = function (e) {
   e.preventDefault();
-  let formValue = document.querySelector('.input').value;
+  let formValue = document.querySelector('.create-input').value;
 
   // guard clause for blank form entry
   if (formValue === '') return;
@@ -71,12 +73,11 @@ const createNewTodo = function (e) {
   toggleClearAllBtn();
 
   // clear form field for next entry
-  form.reset();
+  createForm.reset();
 };
 
 const handleChecks = function (e) {
   // if the event target doesn't happen on the todos container or its children, return
-
   // console.log(e.target.closest('todos-container')); // null
 
   // if (!e.target.classList.contains('check-off')) return; // can't uncheck items now
@@ -84,8 +85,6 @@ const handleChecks = function (e) {
   // if (!e.target.classList.contains('.todo-item')) return; // doesn't work either...
   // if (!e.target.closest('todos-container')) return;
   // if (e.target !== todosContainer) return;
-
-  console.log(`handleChecks() function click`);
 
   const todo = e.target.closest('.todo-item');
   function checkTitle(t) {
@@ -111,23 +110,30 @@ const handleChecks = function (e) {
 };
 
 const updateTodo = function (e) {
+  e.preventDefault();
   const todo = e.target.closest('.todo-item');
+  let formValue = document.querySelector('.update-input').value;
 
-  // guard clause
-  // if (e.target !== todo) return; // doesn't work
-
-  const editTodoText = function () {
-    //
-  };
-
-  todo.classList.toggle('todo--active-edit');
-
-  if (todo.classList.contains('todo--active-edit')) {
-    form.addEventListener('submit', editTodoText);
-    formInput.focus();
-    // createNewTodo(); // Cannot read property 'preventDefault' of undefined
-    form.removeEventListener('submit', editTodoText);
+  if (!todo.classList.contains('todo--active-edit')) {
+    todo.classList.add('todo--active-edit');
+    createForm.classList.add('hidden');
+    updateForm.classList.remove('hidden');
+    updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
+    updateFormInput.focus();
+    todo.firstElementChild.textContent = formValue; // this needs to happen AFTER submit NOT when hitting update icon
+  } else {
+    todo.classList.remove('todo--active-edit');
   }
+
+  // const activeEdit = document.querySelector('.todo--active-edit');
+  // const i = todos.indexOf(activeEdit);
+
+  // if (todo.classList.contains('todo--active-edit')) {
+  //   createForm.classList.add('hidden');
+  //   updateForm.classList.remove('hidden');
+  //   updateFormInput.focus();
+  //   updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
+  // }
 };
 
 const deleteTodo = function (e) {
@@ -156,7 +162,8 @@ const clearAll = function () {
 
 renderUI();
 
-form.addEventListener('submit', createNewTodo);
+createForm.addEventListener('submit', createNewTodo);
+updateForm.addEventListener('submit', updateTodo);
 todosContainer.addEventListener('click', handleChecks);
 todosContainer.addEventListener('click', updateTodo);
 todosContainer.addEventListener('click', deleteTodo);

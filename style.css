@@ -69,19 +69,34 @@ form {
   display: grid;
 }
 
-.input {
-  border: 1px solid #56a250;
+.create-input,
+.update-input {
   font-size: 1.2rem;
   padding: 8px;
   width: 55%;
 }
 
+.create-input {
+  border: 1px solid #56a250;
+}
+
+.update-input {
+  border: 1px solid #5476d3;
+}
+
 .btn {
-  background-color: #56a250;
   color: #fff;
   border: none;
   text-transform: uppercase;
   padding: 12px 30px;
+}
+
+.create-btn {
+  background-color: #56a250;
+}
+
+.update-btn {
+  background-color: #5476d3;
 }
 
 .clear-btn {
