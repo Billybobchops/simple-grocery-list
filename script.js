@@ -57,34 +57,30 @@ function renderUI() {
   toggleClearAllBtn();
 }
 
-function createNewTodo() {
-  const renderNewTodo = function (e) {
-    e.preventDefault();
-    let formValue = document.querySelector('.input').value;
+const createNewTodo = function (e) {
+  e.preventDefault();
+  let formValue = document.querySelector('.input').value;
 
-    // guard clause for blank form entry
-    if (formValue === '') return;
+  // guard clause for blank form entry
+  if (formValue === '') return;
 
-    // push string & todo status to local todos array
-    todos.push({ todoTitle: `${formValue}`, checked: false });
+  // push string & todo status to local todos array
+  todos.push({ todoTitle: `${formValue}`, checked: false });
 
-    // store local state (todos array) in local storage
-    if (typeof Storage !== 'undefined') {
-      localStorage.setItem('todo-items', JSON.stringify(todos));
-    } else {
-      // Alert to user that storage is not supported
-      window.alert('Local storage is not supported in your browser.');
-    }
+  // store local state (todos array) in local storage
+  if (typeof Storage !== 'undefined') {
+    localStorage.setItem('todo-items', JSON.stringify(todos));
+  } else {
+    // Alert to user that storage is not supported
+    window.alert('Local storage is not supported in your browser.');
+  }
 
-    renderUI();
-    toggleClearAllBtn();
+  renderUI();
+  toggleClearAllBtn();
 
-    // clear form field for next entry
-    form.reset();
-  };
-
-  form.addEventListener('submit', renderNewTodo);
-}
+  // clear form field for next entry
+  form.reset();
+};
 
 function handleChecks() {
   const checkHandler = function (e) {
@@ -179,6 +175,7 @@ function init() {
   deleteTodo();
 }
 
+form.addEventListener('submit', createNewTodo);
 clearBtn.addEventListener('click', clearAll);
 
 init();
