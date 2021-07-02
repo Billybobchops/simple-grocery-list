@@ -86,20 +86,11 @@ const createNewTodo = function (e) {
 
   renderUI();
   toggleClearAllBtn();
-
-  // clear form field for next entry
   createForm.reset();
 };
 
 const handleChecks = function (e) {
-  // if the event target doesn't happen on the todos container or its children, return
-  // console.log(e.target.closest('todos-container')); // null
-
-  // if (!e.target.classList.contains('check-off')) return; // can't uncheck items now
-  // if (e.target !== e.target.closest('todos-container')) return; // works but cant check/uncheck etc
-  // if (!e.target.classList.contains('.todo-item')) return; // doesn't work either...
-  // if (!e.target.closest('todos-container')) return;
-  // if (e.target !== todosContainer) return;
+  if (e.target === todosContainer) return;
 
   const todo = e.target.closest('.todo-item');
   function checkTitle(t) {
@@ -165,7 +156,7 @@ const renderUpdate = function (e) {
 };
 
 const deleteTodo = function (e) {
-  // if (e.target !== e.target.classList.contains('delete')) return; // prevents delete from happening at all...
+  if (!e.target.classList.contains('delete')) return;
 
   const todo = e.target.closest('.todo-item');
   function checkTitle(t) {
