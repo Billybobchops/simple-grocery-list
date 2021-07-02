@@ -128,6 +128,10 @@ form .btn {
   background-color: #ecfff2;
 }
 
+.todo--active-edit {
+  background-color: #bbcbf7;
+}
+
 .checked {
   box-shadow: none;
   position: relative;

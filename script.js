@@ -11,6 +11,21 @@ const updateFormInput = document.querySelector('.update-input');
 const todosContainer = document.querySelector('.todos-container');
 const clearBtn = document.querySelector('.clear-btn');
 
+function switchForms() {
+  createForm.classList.toggle('hidden');
+  updateForm.classList.toggle('hidden');
+}
+
+function showUpdateForm() {
+  createForm.classList.add('hidden');
+  updateForm.classList.remove('hidden');
+}
+
+function showCreateForm() {
+  createForm.classList.remove('hidden');
+  updateForm.classList.add('hidden');
+}
+
 function resetUI() {
   todosContainer.innerHTML = '';
 }
@@ -112,41 +127,41 @@ const handleChecks = function (e) {
 const updateTodo = function (e) {
   const todo = e.target.closest('.todo-item');
 
-  // Need guard clause here
   if (!e.target.classList.contains('edit')) return;
 
-  // is there a better way to do this than to nest if statements...?!
-  if (e.target.classList.contains('edit')) {
-    if (!todo.classList.contains('todo--active-edit')) {
-      todo.classList.add('todo--active-edit');
-      createForm.classList.add('hidden');
-      updateForm.classList.remove('hidden');
-      // need to loop over todos and remove active edit
-      // so that no more than one can be active at a time
-      updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
-      todo.style.backgroundColor = '#bbcbf7';
-      updateFormInput.focus();
-    } else {
-      todo.classList.remove('todo--active-edit');
-    }
+  if (todo.classList.contains('todo--active-edit')) {
+    todo.classList.remove('todo--active-edit');
+    showCreateForm();
+    updateFormInput.placeholder = `e.g. eggs`;
+    return;
   }
+
+  document
+    .querySelectorAll('.todo-item')
+    .forEach(td => td.classList.remove('todo--active-edit'));
+  todo.classList.add('todo--active-edit');
+  showUpdateForm();
+  updateFormInput.placeholder = `${todo.firstElementChild.textContent}`;
+  updateFormInput.focus();
 };
 
 const renderUpdate = function (e) {
   e.preventDefault();
   const activeEdit = document.querySelector('.todo--active-edit');
+  let formValue = document.querySelector('.update-input').value;
   function checkTitle(t) {
     return t.todoTitle === activeEdit.firstElementChild.textContent;
   }
   const currentTodo = todos.find(checkTitle);
   const i = todos.indexOf(currentTodo);
 
-  let formValue = document.querySelector('.update-input').value;
+  todos[`${i}`].todoTitle = formValue; // overwrite
+  localStorage['todo-items'] = JSON.stringify(todos); // update
 
-  // copy and edit the local storage code from handleChecks() function here
-
-  // re-render newly update list to the UI
-  // renderUI();
+  renderUI();
+  updateFormInput.placeholder = `e.g. eggs`;
+  updateForm.reset();
+  showCreateForm();
 };
 
 const deleteTodo = function (e) {
